@@ -5,8 +5,7 @@ export const linkedinClient = axios.create({
   baseURL: linkedinConfig.baseURL,
   headers: {
     Authorization: `Bearer ${linkedinConfig.accessToken}`,
-    "LinkedIn-Version": 202511,
-    // "LinkedIn-Version": linkedinConfig.apiVersion,
+    "Linkedin-Version": "202511",
     "X-Restli-Protocol-Version": "2.0.0",
   },
 });
