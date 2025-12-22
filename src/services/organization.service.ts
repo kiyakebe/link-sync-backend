@@ -1,13 +1,14 @@
 import { linkedinClient } from "../utils/linkedin-client";
-import {
-  LinkedInOrganization,
-  LinkedInOrganizationLookupResponse,
-} from "../types/linkedin.types";
+import { LinkedInOrganizationLookupResponse } from "../types/linkedin.types";
 
 export class OrganizationService {
-  static async lookup(ids: number[]): Promise<LinkedInOrganization[]> {
+  static async lookup(
+    ids: number[]
+  ): Promise<LinkedInOrganizationLookupResponse> {
     if (!ids.length) {
-      return [];
+      return {
+        results: {},
+      };
     }
 
     const response =
@@ -20,6 +21,6 @@ export class OrganizationService {
         }
       );
 
-    return response.data.results || [];
+    return response.data;
   }
 }

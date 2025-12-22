@@ -27,6 +27,7 @@ linkedinClient.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error("LinkedIn API Request Error:", error);
     return Promise.reject(error);
   }
 );

@@ -52,38 +52,4 @@ router.get(
   LinkedinController.fetchAdOrganizations
 );
 
-/**
- * @swagger
- * /api/linkedin/notify-slack:
- *   post:
- *     summary: Fetch LinkedIn organizations and notify Slack
- *     description: Retrieves LinkedIn ad organizations and sends a formatted notification to Slack
- *     tags: [LinkedIn]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Slack notification sent successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/SlackNotificationResponse'
- *             example:
- *               message: "Slack notification sent"
- *               count: 3
- *       401:
- *         description: Unauthorized - Invalid credentials
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- */
-router.post("/notify-slack", adminAuth, LinkedinController.fetchAndNotifySlack);
-
 export default router;
