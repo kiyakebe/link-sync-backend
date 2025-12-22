@@ -54,11 +54,18 @@ export class LinkedinController {
 
       const organizations = await OrganizationService.lookup(companyIds);
 
-      await SlackService.notify(
-        `📊 LinkedIn Ad Engagement (Company Level) success ${
-          Object.keys(organizations.results).length
-        }`
-      );
+      // send the name of each organization to slack on by one
+      for (const organization of Object.values(organizations.results)) {
+        await SlackService.notify(
+          `📊 LinkedIn Ad Engagement (Company Level) success ${organization.localizedName}`
+        );
+      }
+
+      // await SlackService.notify(
+      //   `📊 LinkedIn Ad Engagement (Company Level) success ${
+      //     Object.keys(organizations.results).length
+      //   }`
+      // );
 
       return res.status(200).json({
         count: Object.keys(organizations.results).length,
