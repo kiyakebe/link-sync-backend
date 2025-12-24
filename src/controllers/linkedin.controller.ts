@@ -55,10 +55,26 @@ export class LinkedinController {
       const organizations = await OrganizationService.lookup(companyIds);
 
       // send the name of each organization to slack on by one
+      let numberOfOrganizations = 0;
       for (const organization of Object.values(organizations.results)) {
+        numberOfOrganizations++;
+        if (numberOfOrganizations > 10) {
+          break;
+        }
         await SlackService.notify(
           `📊 LinkedIn Ad Engagement (Company Level) success ${organization.localizedName}`
         );
+      }
+
+      // loop over companyId and send slack message for each organization
+      // the message should be the name of the organization
+      for (const companyId of companyIds) {
+        const organization = organizations.results[companyId];
+        if (organization) {
+          await SlackService.notify(
+            `📊 LinkedIn Ad Engagement (Company Level) success ${companyId} - ${organization.localizedName}`
+          );
+        }
       }
 
       // await SlackService.notify(
