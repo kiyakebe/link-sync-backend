@@ -103,6 +103,11 @@ const options: swaggerJsdoc.Options = {
               type: "number",
               description: "Number of organizations",
             },
+            message: {
+              type: "string",
+              description:
+                "Optional message (present when no data is available)",
+            },
             organizations: {
               type: "array",
               items: {

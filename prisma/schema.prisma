@@ -1,0 +1,53 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Note: The 'url' property is now handled in prisma.config.ts for CLI commands
+}
+
+model Workspace {
+  id          String   @id @default(uuid())
+  slackTeamId String   @unique
+  botToken    String
+  installedAt DateTime @default(now())
+
+  linkedin  LinkedInAccount?
+  settings  SlackSettings?
+  snapshots AdViewerSnapshot[]
+}
+
+model LinkedInAccount {
+  id           String   @id @default(uuid())
+  workspaceId  String   @unique
+  accessToken  String
+  expiresAt    DateTime
+  adAccountUrn String
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+model SlackSettings {
+  id          String @id @default(uuid())
+  workspaceId String @unique
+  channelId   String
+  schedule    String // DAILY | WEEKLY | MANUAL
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+model AdViewerSnapshot {
+  id          String   @id @default(uuid())
+  workspaceId String
+  campaignUrn String
+  companyName String
+  date        DateTime
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+
+  @@unique([workspaceId, campaignUrn, companyName, date])
+}
